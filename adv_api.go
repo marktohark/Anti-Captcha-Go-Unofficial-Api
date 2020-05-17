@@ -5,6 +5,15 @@ import (
 	"time"
 )
 
+const (
+	Adv_proxyType_Http = "http"
+	Adv_proxyType_Https = "https"
+	Adv_proxyType_Socks4 = "socks4"
+	Adv_proxyType_Socks5 = "socks5"
+)
+
+type ProxyType string
+
 func Adv_WaitResult(clientKey string, cResp CreateTaskResp_s) (*GetTaskResultResp_s, *Error_s, error) {
 	check := time.NewTimer(2 * time.Second)
 	defer check.Stop()
@@ -29,4 +38,29 @@ func Adv_WaitResult(clientKey string, cResp CreateTaskResp_s) (*GetTaskResultRes
 			}
 		}
 	}
+}
+
+func adv_defaultCreateTask(Task Obj, clientKey string) (*GetTaskResultResp_s, *Error_s, error) {
+	cResp, err := CreateTask(
+		clientKey,
+		Task,
+		0,
+		"en",
+		"",
+	)
+	if err != nil {
+		return nil, nil, err
+	}
+	err_s := IsError(cResp)
+	if err_s != nil {
+		return nil, err_s, nil
+	}
+	result, err_s, err := Adv_WaitResult(clientKey, *cResp)
+	if err != nil {
+		return nil, nil, err
+	}
+	if err_s != nil {
+		return nil, err_s, nil
+	}
+	return result, nil, nil
 }
