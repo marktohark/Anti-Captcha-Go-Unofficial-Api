@@ -1,40 +1,46 @@
 package anticaptcha
 
-import (
-	"bytes"
-	"encoding/json"
-	"net/http"
-	"net/url"
-)
-
 type CreateTaskResp_s struct {
 	response_s
 	TaskId int `json:"taskId"`
 }
 
 func CreateTask(clientKey string, task Obj, softId int, languagePool string, callbackUrl string) (*CreateTaskResp_s, error) {
-	body, err := json.Marshal(Obj {
+	resp_s := &CreateTaskResp_s{}
+	err := getApiContent("createTask", Obj{
 		"clientKey": clientKey,
 		"task": task,
 		"softId": softId,
 		"languagePool": languagePool,
 		"callbackUrl": callbackUrl,
-	})
-	if err != nil {
-		return nil, err
-	}
-	u := baseURL.ResolveReference(&url.URL{Path: "/createTask"})
-	resp, err := http.Post(u.String(), "application/json", bytes.NewBuffer(body))
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	resp_s := &CreateTaskResp_s{}
-	err = json.NewDecoder(resp.Body).Decode(resp_s)
+	}, resp_s)
 	if err != nil {
 		return nil, err
 	}
 	return resp_s, nil
+
+	//body, err := json.Marshal(Obj {
+	//	"clientKey": clientKey,
+	//	"task": task,
+	//	"softId": softId,
+	//	"languagePool": languagePool,
+	//	"callbackUrl": callbackUrl,
+	//})
+	//if err != nil {
+	//	return nil, err
+	//}
+	//u := baseURL.ResolveReference(&url.URL{Path: "/createTask"})
+	//resp, err := http.Post(u.String(), "application/json", bytes.NewBuffer(body))
+	//if err != nil {
+	//	return nil, err
+	//}
+	//defer resp.Body.Close()
+	//resp_s := &CreateTaskResp_s{}
+	//err = json.NewDecoder(resp.Body).Decode(resp_s)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//return resp_s, nil
 }
 
 func Task_ImageToTextTask(body string, phrase bool, _case bool, numeric int, math bool, minLength int, maxLength int, comment string, websiteURL string) Obj {
