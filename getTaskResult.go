@@ -23,24 +23,4 @@ func GetTaskResult(clientKey string, taskId int) (*GetTaskResultResp_s, error) {
 	}
 	resp_s.TaskId = taskId
 	return resp_s, nil
-
-	//body, err := json.Marshal(Obj {
-	//	"clientKey": clientKey,
-	//	"taskId": taskId,
-	//})
-	//if err != nil {
-	//	return nil, err
-	//}
-	//u := baseURL.ResolveReference(&url.URL{Path: "/getTaskResult"})
-	//resp, err := http.Post(u.String(), "application/json", bytes.NewBuffer(body))
-	//if err != nil {
-	//	return nil, err
-	//}
-	//defer resp.Body.Close()
-	//resp_s := &GetTaskResultResp_s{}
-	//err = json.NewDecoder(resp.Body).Decode(resp_s)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//return resp_s, nil
 }
