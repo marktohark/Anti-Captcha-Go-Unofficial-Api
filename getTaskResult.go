@@ -9,6 +9,7 @@ type GetTaskResultResp_s struct {
 	CreateTime int `json:"createTime"`
 	EndTime int `json:"endTime"`
 	SolveCount int `json:"solveCount"`
+	TaskId int
 }
 
 func GetTaskResult(clientKey string, taskId int) (*GetTaskResultResp_s, error) {
@@ -20,6 +21,7 @@ func GetTaskResult(clientKey string, taskId int) (*GetTaskResultResp_s, error) {
 	if err != nil {
 		return nil, err
 	}
+	resp_s.TaskId = taskId
 	return resp_s, nil
 
 	//body, err := json.Marshal(Obj {
